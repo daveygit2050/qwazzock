@@ -6,8 +6,16 @@ bandit: bandit
 black:
 	poetry run black qwazzock/ tests/
 
-.PHONY: build
-build: test clean
+.PHONY: build_wheel build_image
+build:
+	@echo Build complete.
+
+.PHONY: build_image
+build_image:
+	docker build --tag qwazzock:latest --tag qwazzock:$$(poetry version | awk '{print $$2}') .
+
+.PHONY: build_wheel
+build_wheel: test clean
 	poetry build
 
 .PHONY: clean
