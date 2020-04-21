@@ -1,5 +1,6 @@
 # Building
 __pycache__/
+dist/
 
 # Secrets
 *.pem

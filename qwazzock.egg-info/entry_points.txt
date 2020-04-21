@@ -1,0 +1,3 @@
+[console_scripts]
+qwazzock = qwazzock:run
+
