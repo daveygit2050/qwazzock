@@ -1,3 +1,6 @@
+.EXPORT_ALL_VARIABLES:
+version := $(shell poetry version | awk '{print $$2}')
+
 .PHONY: bandit
 bandit: bandit
 	poetry run bandit -r ./ --exclude ./tests
@@ -6,13 +9,13 @@ bandit: bandit
 black:
 	poetry run black qwazzock/ tests/
 
-.PHONY: build_wheel build_image
-build:
+.PHONY: build
+build: build_wheel build_image
 	@echo Build complete.
 
 .PHONY: build_image
 build_image:
-	docker build --tag qwazzock:latest --tag qwazzock:$$(poetry version | awk '{print $$2}') .
+	docker build --build-arg version=${version} --tag qwazzock:latest --tag qwazzock:${version} .
 
 .PHONY: build_wheel
 build_wheel: test clean
@@ -28,13 +31,23 @@ clean:
 
 .PHONY: dev
 dev:
-	export PYTHONPATH="${PYTHONPATH}:`pwd`/" && poetry run python qwazzock/__init__.py
+	export FLASK_ENV=development && export PYTHONPATH="${PYTHONPATH}:`pwd`/" && poetry run python qwazzock/__init__.py
 
 .PHONY: init
 init:
 	pip install poetry --upgrade
 	poetry install
 	poetry run pre-commit install
+
+.PHONY: release
+release: build
+	git update-index --refresh 
+	git diff-index --quiet HEAD --
+	git tag --sign --message "qwazzock version ${version}" ${version} && git push --tags
+
+.PHONY: run
+run:
+	docker run -d -p 5000:5000 qwazzock:${version}
 
 .PHONY: safety
 safety:

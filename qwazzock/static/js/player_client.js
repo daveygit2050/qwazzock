@@ -1,6 +1,7 @@
 $(document).ready(function () {
+    var socket = io.connect('https://' + document.domain + ':' + location.port + '/player_client_socket');
     $("#buzzer").click(function () {
         console.log("Buzzer buzzed via POST.");
-        $.post('https://' + document.domain + ':' + location.port + '/buzz', { name: $("#name").val()});
+        socket.emit('buzz', { player_name: $("#player_name").val(), team_name: $("#team_name").val() })
     });
 });

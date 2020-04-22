@@ -1,53 +1,86 @@
+from unittest import mock
+
 import pytest
 
+from qwazzock import Game
 from qwazzock import get_socketio_and_app
 
 
 @pytest.fixture
-def socketio_test_client():
-    socketio, app = get_socketio_and_app()
-    socketio_test_client = socketio.test_client(app=app)
-    yield socketio_test_client
+def game():
+    mock_game = mock.MagicMock(autospec=Game)
+    mock_game.player_in_hotseat = "Pending"
+    mock_game.team_in_hotseat = "Pending"
+    return mock_game
+
+
+@pytest.fixture
+def socketio_test_client(mocker):
+    def _socketio_test_client(game):
+        socketio, app = get_socketio_and_app(game=game)
+        return socketio.test_client(app=app)
+
+    return _socketio_test_client
 
 
 def test_get_socketio_and_app_ok():
-    socketio, app = get_socketio_and_app()
-    assert "/pass_socket" in list(socketio.server.handlers.keys())
+    socketio, app = get_socketio_and_app(game=mock.MagicMock())
+    assert "/host_client_socket" in list(socketio.server.handlers.keys())
+    assert "/player_client_socket" in list(socketio.server.handlers.keys())
     assert app.name == "qwazzock.server"
 
 
 def test_get_root_ok(socketio_test_client, mocker):
     mock_render_template = mocker.patch("qwazzock.server.render_template")
-    socketio_test_client.app.test_client().get("/")
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.app.test_client().get("/")
     mock_render_template.assert_called_once_with("player_client.html")
 
 
-def test_get_admin_ok(socketio_test_client, mocker):
+def test_get_host_ok(socketio_test_client, game, mocker):
     mock_render_template = mocker.patch("qwazzock.server.render_template")
-    socketio_test_client.app.test_client().get("/admin")
-    mock_render_template.assert_called_once_with("admin.html")
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.app.test_client().get("/host")
+    mock_render_template.assert_called_once_with("host_client.html")
 
 
-def test_post_buzz_ok(socketio_test_client, mocker):
+def test_host_client_socket_connect_ok(socketio_test_client, mocker):
     mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
-    socketio_test_client.app.test_client().post("/buzz", data={"name": "foo-name"})
+    game = Game()
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/host_client_socket")
     mock_socketio_emit.assert_called_once_with(
-        "buzz_data", {"player_in_hotseat": "foo-name"}, namespace="/buzz_data_socket",
+        "host_client_data",
+        {"player_in_hotseat": "Pending", "team_in_hotseat": "Pending"},
+        namespace="/host_client_socket",
     )
 
 
-def test_connect_buzz_data_socket(socketio_test_client, mocker):
+def test_host_client_socket_pass_event_ok(socketio_test_client, mocker):
     mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
-    socketio_test_client.connect(namespace="/buzz_data_socket")
-    mock_socketio_emit.assert_called_once_with(
-        "buzz_data", {"player_in_hotseat": "Pending"}, namespace="/buzz_data_socket",
+    game = Game()
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/host_client_socket")
+    socketio_test_client_under_test.emit(namespace="/host_client_socket", event="pass")
+    mock_socketio_emit.assert_called_with(
+        "host_client_data",
+        {"player_in_hotseat": "Pending", "team_in_hotseat": "Pending"},
+        namespace="/host_client_socket",
     )
 
 
-def test_send_pass_socket(socketio_test_client, mocker):
+def test_player_client_socket_buzz_event_ok(socketio_test_client, mocker):
     mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
-    socketio_test_client.connect(namespace="/pass_socket")
-    socketio_test_client.emit(namespace="/pass_socket", event="pass")
+    game = Game()
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/player_client_socket")
+    socketio_test_client_under_test.emit(
+        "buzz",
+        {"player_name": "foo-name", "team_name": "foo-team"},
+        namespace="/player_client_socket",
+    )
     mock_socketio_emit.assert_called_once_with(
-        "buzz_data", {"player_in_hotseat": "Pending"}, namespace="/buzz_data_socket",
+        "host_client_data",
+        {"player_in_hotseat": "foo-name", "team_in_hotseat": "foo-team"},
+        namespace="/host_client_socket",
     )
