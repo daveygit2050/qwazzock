@@ -1,9 +1,12 @@
 # Building
 __pycache__/
 dist/
+qwazzock.egg-info
 
 # Secrets
 *.pem
 
 # Testing
 .coverage
+.mypi_cache/
+.pytest_cache/
