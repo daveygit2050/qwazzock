@@ -49,11 +49,7 @@ def test_host_client_socket_connect_ok(socketio_test_client, mocker):
     game = Game()
     socketio_test_client_under_test = socketio_test_client(game)
     socketio_test_client_under_test.connect(namespace="/host_client_socket")
-    mock_socketio_emit.assert_called_once_with(
-        "host_client_data",
-        {"player_in_hotseat": "Pending", "team_in_hotseat": "Pending"},
-        namespace="/host_client_socket",
-    )
+    assert len(mock_socketio_emit.mock_calls) == 2
 
 
 def test_host_client_socket_pass_event_ok(socketio_test_client, mocker):
@@ -62,11 +58,27 @@ def test_host_client_socket_pass_event_ok(socketio_test_client, mocker):
     socketio_test_client_under_test = socketio_test_client(game)
     socketio_test_client_under_test.connect(namespace="/host_client_socket")
     socketio_test_client_under_test.emit(namespace="/host_client_socket", event="pass")
-    mock_socketio_emit.assert_called_with(
-        "host_client_data",
-        {"player_in_hotseat": "Pending", "team_in_hotseat": "Pending"},
-        namespace="/host_client_socket",
-    )
+    assert len(mock_socketio_emit.mock_calls) == 4
+
+
+def test_host_client_socket_right_event_ok(socketio_test_client, mocker):
+    mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
+    game = Game()
+    game.team_in_hotseat = "Oxford"
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/host_client_socket")
+    socketio_test_client_under_test.emit(namespace="/host_client_socket", event="right")
+    assert len(mock_socketio_emit.mock_calls) == 4
+
+
+def test_host_client_socket_wrong_event_ok(socketio_test_client, mocker):
+    mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
+    game = Game()
+    game.team_in_hotseat = "Oxford"
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/host_client_socket")
+    socketio_test_client_under_test.emit(namespace="/host_client_socket", event="wrong")
+    assert len(mock_socketio_emit.mock_calls) == 4
 
 
 def test_player_client_socket_buzz_event_ok(socketio_test_client, mocker):
@@ -79,8 +91,4 @@ def test_player_client_socket_buzz_event_ok(socketio_test_client, mocker):
         {"player_name": "foo-name", "team_name": "foo-team"},
         namespace="/player_client_socket",
     )
-    mock_socketio_emit.assert_called_once_with(
-        "host_client_data",
-        {"player_in_hotseat": "foo-name", "team_in_hotseat": "foo-team"},
-        namespace="/host_client_socket",
-    )
+    assert len(mock_socketio_emit.mock_calls) == 2

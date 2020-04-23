@@ -8,5 +8,5 @@ qwazzock.egg-info
 
 # Testing
 .coverage
-.mypi_cache/
+.mypy_cache/
 .pytest_cache/

@@ -17,9 +17,13 @@ Start an instance of the app using:
 
 Create a route to localhost:5000 using a hostname included in the SSL certificate.
 
-Instruct players to navigate to the site's root address (e.g. https://qwazzock.randall.lol). They can then enter their name and buzz when ready.
+Instruct players to navigate to the site's root address (e.g. https://qwazzock.randall.lol). They can then enter their name, team name and buzz when they know the answer. Note that players to be on the same team, their team names must match exactly (including case). 
 
-As an admin, you can then navigate to the `/admin` path (e.g. https://qwazzock.randall.lol/admin) in order to see who has buzzed first. You can use the `pass` button to clear the hotseat and allow another player to answer, or to move on to the next question.
+As a host, you can then navigate to the `/host` path (e.g. https://qwazzock.randall.lol/host) in order to see who has buzzed first and to mark their answer. You can respond with the following:
+
+- `pass` can be used when no one wants to buzz in who still can, as they don't know the answer. It clears the hotseat if occupied (e.g if someone buzzed accidentally), and any locked out teams become unlocked.
+- `right` clears the hotseat, any locked out teams and awards the team a point.
+- `wrong` places the team who answered onto a "locked out" list, preventing them from buzzing in until the current question completed.
 
 ### Routing
 
@@ -58,14 +62,29 @@ This includes:
 - static code analysis (`make bandit`).
 - dependency vulnerability analysis (`make safety`).
 
-### Build package
+### Build artefacts
 
 `make build`
 
+This includes:
+
+- pip wheel (`make build_wheel`).
+- docker image (`make build_image`).
+
+### Standup a local container
+
+`make run`
+
+### Release version
+
+Local repo must be clean.
+
+`make release`
+
 ## Todo
 
-- Building a docker image.
 - Prevent player from buzzing without a name, as this sets player_in_hostseat to empty.
 - Selenium based journey testing.
 - Automatic versioning, changelogs and documentation.
 - Type hinting and checking.
+- Add reset button to clear all game state.
