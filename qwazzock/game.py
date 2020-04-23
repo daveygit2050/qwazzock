@@ -19,6 +19,11 @@ class Game:
         self.player_in_hotseat = "Pending"
         self.team_in_hotseat = "Pending"
 
+    def reset(self):
+        self.clear_hotseat()
+        self.scores = {}
+        self.locked_out_teams = []
+
     def right_answer(self):
         self.scores[self.team_in_hotseat] = self.scores.get(self.team_in_hotseat, 0) + 1
         self.scores = dict(

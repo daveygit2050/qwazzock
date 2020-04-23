@@ -41,6 +41,11 @@ def get_socketio_and_app(game):
         game.locked_out_teams = []
         update_clients()
 
+    @socketio.on("reset", namespace="/host_client_socket")
+    def host_client_socket_reset_event():
+        game.reset()
+        update_clients()
+
     @socketio.on("right", namespace="/host_client_socket")
     def host_client_socket_right_event():
         game.right_answer()

@@ -16,6 +16,9 @@ $(document).ready(function () {
     $("#pass").click(function () {
         socket.emit('pass');
     });
+    $("#reset").click(function () {
+        socket.emit('reset');
+    });
     $("#right").click(function () {
         socket.emit('right');
     });

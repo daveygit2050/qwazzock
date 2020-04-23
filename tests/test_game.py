@@ -32,6 +32,19 @@ def test_game_clear_hotseat_ok():
     assert game.team_in_hotseat == "Pending"
 
 
+def test_game_reset_ok():
+    game = Game()
+    game.player_in_hotseat = "Bob"
+    game.team_in_hotseat = "Oxford"
+    game.locked_out_teams = ["Bristol"]
+    game.scores = {"Oxford": 1, "Cambridge": 3}
+    game.reset()
+    assert game.player_in_hotseat == "Pending"
+    assert game.team_in_hotseat == "Pending"
+    assert game.locked_out_teams == []
+    assert game.scores == {}
+
+
 def test_game_right_answer_ok(mocker):
     mock_clear_hotseat = mocker.patch("qwazzock.Game.clear_hotseat")
     game = Game()

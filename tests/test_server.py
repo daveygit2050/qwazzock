@@ -61,6 +61,16 @@ def test_host_client_socket_pass_event_ok(socketio_test_client, mocker):
     assert len(mock_socketio_emit.mock_calls) == 4
 
 
+def test_host_client_socket_reset_event_ok(socketio_test_client, mocker):
+    mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
+    game = mock.MagicMock()
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/host_client_socket")
+    socketio_test_client_under_test.emit(namespace="/host_client_socket", event="reset")
+    assert len(mock_socketio_emit.mock_calls) == 4
+    game.reset.assert_called_once()
+
+
 def test_host_client_socket_right_event_ok(socketio_test_client, mocker):
     mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
     game = Game()

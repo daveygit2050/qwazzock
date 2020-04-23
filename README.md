@@ -25,6 +25,8 @@ As a host, you can then navigate to the `/host` path (e.g. https://qwazzock.rand
 - `right` clears the hotseat, any locked out teams and awards the team a point.
 - `wrong` places the team who answered onto a "locked out" list, preventing them from buzzing in until the current question completed.
 
+You can also use `reset` to wipe all data for the in progress game and start a new one.
+
 ### Routing
 
 Getting around the useless Virgin Media Business' routers ability to only port foward to the same port:
