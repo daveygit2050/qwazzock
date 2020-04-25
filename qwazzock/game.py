@@ -1,3 +1,4 @@
+import logging
 import operator
 
 
@@ -20,6 +21,8 @@ class Game:
         self.team_in_hotseat = "Pending"
 
     def reset(self):
+        logger = logging.getLogger("qwazzock")
+        logger.info("Game reset.")
         self.clear_hotseat()
         self.scores = {}
         self.locked_out_teams = []

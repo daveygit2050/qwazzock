@@ -101,4 +101,12 @@ def test_player_client_socket_buzz_event_ok(socketio_test_client, mocker):
         {"player_name": "foo-name", "team_name": "foo-team"},
         namespace="/player_client_socket",
     )
+    assert len(mock_socketio_emit.mock_calls) == 4
+
+
+def test_player_client_socket_connect_ok(socketio_test_client, mocker):
+    mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
+    game = Game()
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/player_client_socket")
     assert len(mock_socketio_emit.mock_calls) == 2

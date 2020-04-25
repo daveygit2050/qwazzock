@@ -32,7 +32,6 @@ You can also use `reset` to wipe all data for the in progress game and start a n
 Getting around the useless Virgin Media Business' routers ability to only port foward to the same port:
 
 ```
-iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 5000
 iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports 5000
 ```
 

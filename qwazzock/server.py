@@ -21,16 +21,6 @@ def get_socketio_and_app(game):
 
     # Sockets
 
-    @socketio.on("buzz", namespace="/player_client_socket")
-    def player_client_socket_buzz_event(json):
-        app.logger.info(
-            f"Recevied buzz from {json['player_name']} of {json['team_name']}."
-        )
-        game.update_hotseat(
-            player_name=json["player_name"], team_name=json["team_name"]
-        )
-        update_clients()
-
     @socketio.on("connect", namespace="/host_client_socket")
     def host_client_socket_connect():
         update_clients()
@@ -54,6 +44,20 @@ def get_socketio_and_app(game):
     @socketio.on("wrong", namespace="/host_client_socket")
     def host_client_socket_wrong_event():
         game.wrong_answer()
+        update_clients()
+
+    @socketio.on("buzz", namespace="/player_client_socket")
+    def player_client_socket_buzz_event(json):
+        app.logger.info(
+            f"Recevied buzz from {json['player_name']} of {json['team_name']}."
+        )
+        game.update_hotseat(
+            player_name=json["player_name"], team_name=json["team_name"]
+        )
+        update_clients()
+
+    @socketio.on("connect", namespace="/player_client_socket")
+    def player_client_socket_connect():
         update_clients()
 
     # Helpers
