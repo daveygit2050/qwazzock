@@ -94,7 +94,6 @@ Local repo must be clean.
 
 ### Bug fixes
 - Prevent player from buzzing without a name, as this sets player_in_hostseat to empty.
-- Remove trailing spaces from player name and team name.
 - Only allow letters, numbers and spaces in team name.
 - Improve reliability of buzzer send events.
 - Stop text/button on buzzer from being selectable.

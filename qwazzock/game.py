@@ -8,6 +8,8 @@ class Game:
         self.clear_hotseat()
 
     def update_hotseat(self, player_name, team_name):
+        player_name = player_name.strip()
+        team_name = team_name.strip()
         if (
             self.player_in_hotseat == "Pending"
             and team_name not in self.locked_out_teams

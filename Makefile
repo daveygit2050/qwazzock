@@ -2,7 +2,7 @@
 version := $(shell poetry version | awk '{print $$2}')
 
 .PHONY: bandit
-bandit: bandit
+bandit:
 	poetry run bandit -r ./ --exclude ./tests
 
 .PHONY: black
