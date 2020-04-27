@@ -32,7 +32,6 @@ You can also use `reset` to wipe all data for the in progress game and start a n
 Getting around the useless Virgin Media Business' routers ability to only port foward to the same port:
 
 ```
-iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 5000
 iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports 5000
 ```
 
@@ -85,8 +84,26 @@ Local repo must be clean.
 
 ## Todo
 
+### Features
+- Allow player to select existing teams from a list or enter a new team name.
+- Allow player to customise client (e.g. different button shapes).
+- Give player feedback when they buzzed successfully.
+- Give player feedback when they didn't buzz in time.
+- Give host audible feedback that someone has buzz.
+- Allow players to see live team scores.
+
+### Bug fixes
 - Prevent player from buzzing without a name, as this sets player_in_hostseat to empty.
+- Remove trailing spaces from player name and team name.
+- Only allow letters, numbers and spaces in team name.
+- Improve reliability of buzzer send events.
+- Stop text/button on buzzer from being selectable.
+- Make buzzer slightly smaller to allow screen to be scrolled if necessary.
+
+### Project improvements
 - Selenium based journey testing.
 - Automatic versioning, changelogs and documentation.
 - Type hinting and checking.
-- Add reset button to clear all game state.
+- Publish built python wheel to PyPi.
+- Implement continuous integration process.
+- Implement pull request building.
