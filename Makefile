@@ -15,7 +15,7 @@ build: build_wheel build_image
 
 .PHONY: build_image
 build_image:
-	docker build --build-arg version=${version} --tag qwazzock:latest --tag qwazzock:${version} .
+	docker build --build-arg version=${version} --tag qwazzock:latest --tag qwazzock:${version} --network=host .
 
 .PHONY: build_wheel
 build_wheel: test clean
