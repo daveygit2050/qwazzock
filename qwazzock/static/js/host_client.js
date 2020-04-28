@@ -1,5 +1,7 @@
 $(document).ready(function () {
     var socket = io.connect('https://' + document.domain + ':' + location.port + '/host_client_socket');
+    var buzzerAudio = document.createElement('audio');
+    buzzerAudio.setAttribute('src', '/static/audio/meh.mp3');
     socket.on('host_client_data', function (msg) {
         $('#player').html("Player in hotseat: " + msg.player_in_hotseat);
         $('#team').html("Team in hotseat: " + msg.team_in_hotseat);
@@ -9,6 +11,7 @@ $(document).ready(function () {
             $("#right").prop("disabled", true);
             $("#wrong").prop("disabled", true);
         } else {
+            buzzerAudio.play();
             $("#right").prop("disabled", false);
             $("#wrong").prop("disabled", false);
         }
