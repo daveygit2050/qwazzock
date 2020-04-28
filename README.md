@@ -87,17 +87,13 @@ Local repo must be clean.
 ### Features
 - Allow player to select existing teams from a list or enter a new team name.
 - Allow player to customise client (e.g. different button shapes).
-- Give player feedback when they buzzed successfully.
-- Give player feedback when they didn't buzz in time.
-- Give host audible feedback that someone has buzz.
+- Give player feedback when they didn't buzz in time (kind of done, it says who did buzz successfully).
+- Give host audible feedback that someone has buzzed (done for host).
 - Allow players to see live team scores.
 
 ### Bug fixes
-- Prevent player from buzzing without a name, as this sets player_in_hostseat to empty.
 - Only allow letters, numbers and spaces in team name.
-- Improve reliability of buzzer send events.
-- Stop text/button on buzzer from being selectable.
-- Make buzzer slightly smaller to allow screen to be scrolled if necessary.
+- Improve reliability of buzzer send events (possibly done).
 
 ### Project improvements
 - Selenium based journey testing.
