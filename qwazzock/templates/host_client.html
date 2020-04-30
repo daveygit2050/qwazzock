@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.light_blue-deep_orange.min.css">
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <script src="static/js/host_client.js"></script>
-    <link rel="stylesheet" href="static/css/common.css">
-</head>
-
-<body>
+{% extends "base.html" %}
+{% block body %}
     <div style="margin: 5vh 5vw">
         <h1>
             <div id="team">Team in hotseat: Pending</div>
@@ -21,13 +9,14 @@
             <div id="locked_out">Locked out: </div>
             <div id="scores">Scores: {}</div>
         </h2>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pass" style="height:5vh;width:10vw;margin-right:1vw;">Pass</button>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="right" style="height:5vh;width:10vw;margin-right:1vw;" disabled>Right</button>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="wrong" style="height:5vh;width:10vw;margin-right:1vw;" disabled>Wrong</button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pass"
+            style="height:5vh;width:10vw;margin-right:1vw;">Pass</button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="right"
+            style="height:5vh;width:10vw;margin-right:1vw;" disabled>Right</button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="wrong"
+            style="height:5vh;width:10vw;margin-right:1vw;" disabled>Wrong</button>
         <div style="height:5vh;"></div>
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="reset"
             style="height:5vh;width:10vw;margin-right:1vw;">Reset</button>
     </div>
-</body>
-
-</html>
+{% endblock %}

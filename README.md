@@ -9,17 +9,15 @@ An app for hosting quizes remotely.
 
 ## Usage
 
-Place certificates in the local directory for the SSL public and private keys, named `cert.pem` and `key.pem` accordingly.
-
 Start an instance of the app using:
 
 `qwazzock`
 
 Create a route to localhost:5000 using a hostname included in the SSL certificate.
 
-Instruct players to navigate to the site's root address (e.g. https://qwazzock.randall.lol). They can then enter their name, team name and buzz when they know the answer. Note that players to be on the same team, their team names must match exactly (including case). 
+Instruct players to navigate to the site's root address (e.g. http://127.0.0.1:5000). They can then enter their name, team name and buzz when they know the answer. Note that players to be on the same team, their team names must match exactly (including case). 
 
-As a host, you can then navigate to the `/host` path (e.g. https://qwazzock.randall.lol/host) in order to see who has buzzed first and to mark their answer. You can respond with the following:
+As a host, you can then navigate to the `/host` path (e.g. http://127.0.0.1:5000/host) in order to see who has buzzed first and to mark their answer. You can respond with the following:
 
 - `pass` can be used when no one wants to buzz in who still can, as they don't know the answer. It clears the hotseat if occupied (e.g if someone buzzed accidentally), and any locked out teams become unlocked.
 - `right` clears the hotseat, any locked out teams and awards the team a point.
@@ -27,19 +25,14 @@ As a host, you can then navigate to the `/host` path (e.g. https://qwazzock.rand
 
 You can also use `reset` to wipe all data for the in progress game and start a new one.
 
-### Routing
+### Environment variables
 
-Getting around the useless Virgin Media Business' routers ability to only port foward to the same port:
+Behaviour of the application can be tweaked by setting the following environment variables:
 
-```
-iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports 5000
-```
-
-### Certbot
-
-If working at an unroutable location, the below can be used to generate the required ssl key files:
-
-```sudo certbot certonly --manual --preferred-challenges dns```
+|Name|Options|Default|Description|
+|-|-|-|-|
+|`QWAZZOCK_LOG_LEVEL`|`DEBUG`, `INFO`, `WARNING`, `ERROR`|`INFO`|Log application events at this level and above.|
+|`QWAZZOCK_SOCKETIO_DEBUG_MODE`|Any|Not set|If set, access logs from socketio will be output.|
 
 ## Development
 
@@ -51,7 +44,7 @@ If working at an unroutable location, the below can be used to generate the requ
 
 `make dev`
 
-The server will be accessible at https://0.0.0.0:5000.
+The server will be accessible at https://127.0.0.1:5000.
 
 ### Run all tests
 
@@ -75,6 +68,10 @@ This includes:
 ### Standup a local container
 
 `make run`
+
+### Stop local containers
+
+`make stop`
 
 ### Release version
 

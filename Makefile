@@ -31,7 +31,7 @@ clean:
 
 .PHONY: dev
 dev:
-	export FLASK_ENV=development && export PYTHONPATH="${PYTHONPATH}:`pwd`/" && poetry run python qwazzock/__init__.py
+	export QWAZZOCK_SOCKETIO_DEBUG_MODE=TRUE && export PYTHONPATH="${PYTHONPATH}:`pwd`/" && poetry run python qwazzock/__init__.py
 
 .PHONY: init
 init:
@@ -47,11 +47,15 @@ release: build
 
 .PHONY: run
 run:
-	docker run -d -p 5000:5000 qwazzock:${version}
+	docker run -d -p 5000:5000 --env QWAZZOCK_SOCKETIO_DEBUG_MODE=TRUE qwazzock:${version}
 
 .PHONY: safety
 safety:
 	poetry run safety check
+
+.PHONY: stop
+stop:
+	docker rm -f $$(docker ps | grep qwazzock | awk '{print $$1}')
 
 .PHONY: test
 test: unit_test bandit safety

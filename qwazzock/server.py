@@ -4,20 +4,22 @@ from flask import request
 from flask_socketio import emit
 from flask_socketio import SocketIO
 
+from qwazzock import logger
+
 
 def get_socketio_and_app(game):
     app = Flask(__name__)
-    socketio = SocketIO(app)
+    socketio = SocketIO(app, cors_allowed_origins="*")
 
     # Routes
 
     @app.route("/")
     def player_client():
-        return render_template("player_client.html")
+        return render_template("player_client.html", page_name="player_client")
 
     @app.route("/host")
     def host():
-        return render_template("host_client.html")
+        return render_template("host_client.html", page_name="host_client")
 
     # Sockets
 
@@ -52,9 +54,7 @@ def get_socketio_and_app(game):
 
     @socketio.on("buzz", namespace="/player_client_socket")
     def player_client_socket_buzz_event(json):
-        app.logger.info(
-            f"Recevied buzz from {json['player_name']} of {json['team_name']}."
-        )
+        logger.info(f"Received buzz from {json['player_name']} of {json['team_name']}.")
         game.update_hotseat(
             player_name=json["player_name"], team_name=json["team_name"]
         )
