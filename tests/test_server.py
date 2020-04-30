@@ -34,14 +34,18 @@ def test_get_root_ok(socketio_test_client, mocker):
     mock_render_template = mocker.patch("qwazzock.server.render_template")
     socketio_test_client_under_test = socketio_test_client(game)
     socketio_test_client_under_test.app.test_client().get("/")
-    mock_render_template.assert_called_once_with("player_client.html")
+    mock_render_template.assert_called_once_with(
+        "player_client.html", page_name="player_client"
+    )
 
 
 def test_get_host_ok(socketio_test_client, game, mocker):
     mock_render_template = mocker.patch("qwazzock.server.render_template")
     socketio_test_client_under_test = socketio_test_client(game)
     socketio_test_client_under_test.app.test_client().get("/host")
-    mock_render_template.assert_called_once_with("host_client.html")
+    mock_render_template.assert_called_once_with(
+        "host_client.html", page_name="host_client"
+    )
 
 
 def test_host_client_socket_connect_ok(socketio_test_client, mocker):

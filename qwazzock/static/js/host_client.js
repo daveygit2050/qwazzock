@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var socket = io.connect('https://' + document.domain + ':' + location.port + '/host_client_socket');
+    var socket = io.connect(document.location.origin + '/host_client_socket');
     var buzzerAudio = document.createElement('audio');
     buzzerAudio.setAttribute('src', '/static/audio/meh.mp3');
     socket.on('host_client_data', function (msg) {

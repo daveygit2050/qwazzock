@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var socket = io.connect('https://' + document.domain + ':' + location.port + '/player_client_socket');
+    var socket = io.connect(document.location.origin + '/player_client_socket');
     socket.on('player_client_data', function (msg) {
         if (msg.player_in_hotseat == $("#player_name").val()) {
             $("#feedback").html(msg.player_in_hotseat + ", you are in the hotseat!")
