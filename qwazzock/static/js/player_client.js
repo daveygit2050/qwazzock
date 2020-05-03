@@ -15,7 +15,7 @@ $(document).ready(function () {
             $("#buzzer").prop("disabled", false);
         }
     });
-    $("#buzzer").click(function () {
+    $("#buzzer").on('click touchstart hover', function () {
         if ($("#player_name").val().trim() == "") {
             $("#feedback").html("Player name cannot be blank.")
         } else if ($("#team_name").val().trim() == "") {
