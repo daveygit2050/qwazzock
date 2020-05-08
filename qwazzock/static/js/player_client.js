@@ -20,9 +20,11 @@ $(document).ready(function () {
             $("#feedback").html("Player name cannot be blank.")
         } else if ($("#team_name").val().trim() == "") {
             $("#feedback").html("Team name cannot be blank.")
-        } else {
+        } else if ($("#buzzer").prop("disabled") == false) {
             console.log("Buzzer buzzed.");
-            socket.emit('buzz', { player_name: $("#player_name").val(), team_name: $("#team_name").val() })
+            socket.emit('buzz', { player_name: $("#player_name").val(), team_name: $("#team_name").val() });
+        } else {
+            console.log("Buzz denied.");
         }
     });
 });
