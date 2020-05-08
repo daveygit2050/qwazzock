@@ -79,23 +79,3 @@ Local repo must be clean.
 
 `make release`
 
-## Todo
-
-### Features
-- Allow player to select existing teams from a list or enter a new team name.
-- Allow player to customise client (e.g. different button shapes).
-- Give player feedback when they didn't buzz in time (kind of done, it says who did buzz successfully).
-- Give host audible feedback that someone has buzzed (done for host).
-- Allow players to see live team scores.
-
-### Bug fixes
-- Only allow letters, numbers and spaces in team name.
-- Improve reliability of buzzer send events (possibly done).
-
-### Project improvements
-- Selenium based journey testing.
-- Automatic versioning, changelogs and documentation.
-- Type hinting and checking.
-- Publish built python wheel to PyPi.
-- Implement continuous integration process.
-- Implement pull request building.
