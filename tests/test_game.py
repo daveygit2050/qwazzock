@@ -52,8 +52,9 @@ class TestGame:
         game = Game()
         game.team_in_hotseat = "Oxford"
         game.scores = {"Oxford": 1, "Cambridge": 3}
+        game.score_value = 5
         game.right_answer()
-        assert game.scores == {"Oxford": 2, "Cambridge": 3}
+        assert game.scores == {"Oxford": 6, "Cambridge": 3}
         assert len(mock_clear_hotseat.mock_calls) == 2
 
     def test_game_wrong_answer_ok(self, mocker):
