@@ -81,7 +81,9 @@ def test_host_client_socket_right_event_ok(socketio_test_client, mocker):
     game.team_in_hotseat = "Oxford"
     socketio_test_client_under_test = socketio_test_client(game)
     socketio_test_client_under_test.connect(namespace="/host_client_socket")
-    socketio_test_client_under_test.emit(namespace="/host_client_socket", event="right")
+    socketio_test_client_under_test.emit(
+        "right", {"score_value": 1}, namespace="/host_client_socket"
+    )
     assert len(mock_socketio_emit.mock_calls) == 4
 
 

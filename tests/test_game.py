@@ -52,8 +52,7 @@ class TestGame:
         game = Game()
         game.team_in_hotseat = "Oxford"
         game.scores = {"Oxford": 1, "Cambridge": 3}
-        game.score_value = 5
-        game.right_answer()
+        game.right_answer(5)
         assert game.scores == {"Oxford": 6, "Cambridge": 3}
         assert len(mock_clear_hotseat.mock_calls) == 2
 

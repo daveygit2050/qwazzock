@@ -23,7 +23,8 @@ $(document).ready(function () {
         socket.emit('reset');
     });
     $("#right").click(function () {
-        socket.emit('right');
+        var score_value = $("#score_value").val();
+        socket.emit('right', { score_value: score_value });
     });
     $("#wrong").click(function () {
         socket.emit('wrong');
