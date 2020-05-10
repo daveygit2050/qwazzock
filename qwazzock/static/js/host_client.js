@@ -1,7 +1,14 @@
 $(document).ready(function () {
-    var socket = io.connect(document.location.origin + '/host_client_socket');
+
     var buzzerAudio = document.createElement('audio');
     buzzerAudio.setAttribute('src', '/static/audio/meh.mp3');
+
+    var dialog = document.querySelector('#reset-dialog');
+    if (! dialog.showModal) {
+      dialogPolyfill.registerDialog(dialog);
+    }
+
+    var socket = io.connect(document.location.origin + '/host_client_socket');
     socket.on('host_client_data', function (msg) {
         $('#player').html("Player in hotseat: " + msg.player_in_hotseat);
         $('#team').html("Team in hotseat: " + msg.team_in_hotseat);
@@ -16,11 +23,13 @@ $(document).ready(function () {
             $("#wrong").prop("disabled", false);
         }
     });
+
     $("#pass").click(function () {
         socket.emit('pass');
     });
-    $("#reset").click(function () {
+    $("#reset-confirm").click(function () {
         socket.emit('reset');
+        dialog.close();
     });
     $("#right").click(function () {
         var score_value = $("#score_value").val();
@@ -29,4 +38,13 @@ $(document).ready(function () {
     $("#wrong").click(function () {
         socket.emit('wrong');
     });
+
+    var dialogButton = document.querySelector('#reset-button');
+    dialogButton.addEventListener('click', function() {
+       dialog.showModal();
+    });
+    dialog.querySelector('button.dialog-cancel').addEventListener('click', function() {
+      dialog.close();
+    });
+
 });
