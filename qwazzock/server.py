@@ -39,9 +39,12 @@ def get_socketio_and_app(game):
         update_clients()
 
     @socketio.on("right", namespace="/host_client_socket")
-    def host_client_socket_right_event():
-        game.right_answer()
-        update_clients()
+    def host_client_socket_right_event(json):
+        score_value = int(json["score_value"])
+        logger.info(f"Received right with score_value of {score_value}.")
+        if score_value > 0 and score_value < 10:
+            game.right_answer(score_value)
+            update_clients()
 
     @socketio.on("wrong", namespace="/host_client_socket")
     def host_client_socket_wrong_event():

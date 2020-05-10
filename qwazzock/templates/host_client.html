@@ -9,14 +9,21 @@
             <div id="locked_out">Locked out: </div>
             <div id="scores">Scores: {}</div>
         </h2>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pass"
-            style="height:5vh;width:10vw;margin-right:1vw;">Pass</button>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="right"
-            style="height:5vh;width:10vw;margin-right:1vw;" disabled>Right</button>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="wrong"
-            style="height:5vh;width:10vw;margin-right:1vw;" disabled>Wrong</button>
-        <div style="height:5vh;"></div>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="reset"
-            style="height:5vh;width:10vw;margin-right:1vw;">Reset</button>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" pattern="[0-9]+" id="score_value" value="1">
+            <label class="mdl-textfield__label" for="score_value">Score Value</label>
+            <span class="mdl-textfield__error">Input is not a number!</span>
+        </div>
+        <div>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pass"
+                style="height:5vh;width:10vw;margin-right:1vw;">Pass</button>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="right"
+                style="height:5vh;width:10vw;margin-right:1vw;" disabled>Right</button>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="wrong"
+                style="height:5vh;width:10vw;margin-right:1vw;" disabled>Wrong</button>
+            <div style="height:5vh;"></div>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="reset"
+                style="height:5vh;width:10vw;margin-right:1vw;">Reset</button>
+        </div>
     </div>
 {% endblock %}
