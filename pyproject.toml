@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "qwazzock"
-version = "0.9.0"
+version = "0.10.0"
 description = "Qwazzock quiz app."
 authors = ["Dave Randall <19395688+daveygit2050@users.noreply.github.com>"]
 
