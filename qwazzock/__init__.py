@@ -1,7 +1,7 @@
 import os
 
+from qwazzock.logs import logger  # noreorder
 from qwazzock.game import Game
-from qwazzock.logs import logger
 from qwazzock.server import get_socketio_and_app
 
 
