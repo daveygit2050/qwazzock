@@ -25,14 +25,37 @@ As a host, you can then navigate to the `/host` path (e.g. http://127.0.0.1:5000
 
 You can also use `reset` to wipe all data for the in progress game and start a new one.
 
+### Question Types
+
+There are two "question types" you can select, `standard` or `picture`.
+
+#### Standard
+
+This is the default question type. It allows you to ask any question and decide if the answer is right or wrong.
+
+#### Picture
+
+When this quesiton type is selected, all players are presnted with a randomly selected image from the `questions` folder in the content directory (see below) as their buzzer image. You will be presented with the name of the image they are seeing.
+
+The ordering of the images is random. Once you select `pass`, `right` or `wrong`, the next image in the list will be presented. This will continue until you change question type, or you run out of question images. If the latter occurs, the question type will automatically revery back to `standard`.
+
+Should you not provide a content directory, the content directory does not contain a `questions` folder, or the `questions` folder is empty, then the question type will automatically revert back to `standard`.
+
 ### Environment variables
 
 Behaviour of the application can be tweaked by setting the following environment variables:
 
 |Name|Options|Default|Description|
 |-|-|-|-|
+|`QWAZZOCK_CONTENT_PATH`|A valid absolute path.|Not set|If set, additional content is loaded into qwazzock from this directory.|
 |`QWAZZOCK_LOG_LEVEL`|`DEBUG`, `INFO`, `WARNING`, `ERROR`|`INFO`|Log application events at this level and above.|
 |`QWAZZOCK_SOCKETIO_DEBUG_MODE`|Any|Not set|If set, access logs from socketio will be output.|
+
+### Content Directory
+
+For a more interactive experience, you can load custom content into a "content directory" and provide this to qwazzock using the `QWAZZOCK_CONTENT_PATH` environment variable.
+
+Currently, the only supported custom content is images for use with the `picture` question type. These must be loaded into a `questions` folder within the content directory. The file name should be the answer as you wish it to appear to the host.
 
 ## Development
 

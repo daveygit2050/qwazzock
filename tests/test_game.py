@@ -35,6 +35,40 @@ class TestGame:
         assert game.player_in_hotseat == "Pending"
         assert game.team_in_hotseat == "Pending"
 
+    def test_game_next_question_ok(self, mocker):
+        mocker.patch("qwazzock.Game.prepare_picture_round")
+        game = Game()
+        game.question_type = "picture"
+        game.selected_image_index = 1
+        game.question_images = ["foo.jpg", "bar.png", "blah.bmp"]
+        game.next_question()
+        assert game.selected_image_index == 2
+        assert game.selected_image == "blah.bmp"
+        assert game.question_type == "picture"
+
+    def test_game_next_question_no_more_images(self, mocker):
+        mock_prepare_picture_round = mocker.patch("qwazzock.Game.prepare_picture_round")
+        game = Game()
+        game.question_type = "picture"
+        game.selected_image_index = 2
+        game.question_images = ["foo.jpg", "bar.png", "blah.bmp"]
+        game.next_question()
+        assert game.question_type == "standard"
+        assert len(mock_prepare_picture_round.mock_calls) == 2
+
+    def test_game_prepare_picture_round_ok(self, mocker):
+        mock_os_listdir = mocker.patch("os.listdir")
+        mock_os_listdir.return_value = ["foo.jpg", "bar.png", "blah.bmp"]
+        game = Game(content_path="/foo-content-path")
+        assert "bar.png" in game.question_images
+        assert game.selected_image_index == 0
+
+    def test_game_prepare_picture_round_no_files(self, mocker):
+        mock_os_listdir = mocker.patch("os.listdir")
+        mock_os_listdir.return_value = []
+        game = Game(content_path="/foo-content-path")
+        assert game.selected_image_index is None
+
     def test_game_reset_ok(self):
         game = Game()
         game.player_in_hotseat = "Bob"

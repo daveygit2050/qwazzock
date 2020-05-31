@@ -1,11 +1,14 @@
 import operator
+import os
+import random
+
+from qwazzock import logger
 
 
 class Game:
-    def __init__(self):
-        self.scores = {}
-        self.locked_out_teams = []
-        self.clear_hotseat()
+    def __init__(self, content_path=None):
+        self.content_path = content_path
+        self.reset()
 
     def update_hotseat(self, player_name, team_name):
         player_name = player_name.strip()
@@ -21,10 +24,43 @@ class Game:
         self.player_in_hotseat = "Pending"
         self.team_in_hotseat = "Pending"
 
+    def next_question(self):
+        if self.question_type == "picture":
+            self.selected_image_index += 1
+            try:
+                self.selected_image = self.question_images[self.selected_image_index]
+            except IndexError:
+                logger.info(
+                    "No more picture questions available. Reverting to standard question type."
+                )
+                self.question_type = "standard"
+                self.prepare_picture_round()
+
+    def prepare_picture_round(self):
+        self.selected_image_index = None
+        try:
+            self.question_images = os.listdir(f"{self.content_path}/questions")
+        except FileNotFoundError:
+            logger.warning(
+                f"Could not find questions folder in content directory ({self.content_path}). Picture question type will not be available."
+            )
+            return
+        if self.question_images:
+            random.shuffle(self.question_images)
+            self.selected_image = self.question_images[0]
+        else:
+            logger.warning(
+                f"No question images available in content directory ({self.content_path}/questions). Picture question type will not be available."
+            )
+            return
+        self.selected_image_index = 0
+
     def reset(self):
         self.clear_hotseat()
         self.scores = {}
         self.locked_out_teams = []
+        self.question_type = "standard"
+        self.prepare_picture_round()
 
     def right_answer(self, score_value=1):
         self.scores[self.team_in_hotseat] = (
