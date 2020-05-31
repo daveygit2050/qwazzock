@@ -22,6 +22,15 @@ $(document).ready(function () {
             $("#right").prop("disabled", false);
             $("#wrong").prop("disabled", false);
         }
+        if (msg.question_type == "standard") {
+            $("#standard").prop("disabled", true);
+            $("#picture").prop("disabled", false);
+            $("#answer").html("")
+        } else {
+            $("#standard").prop("disabled", false);
+            $("#picture").prop("disabled", true);
+            $("#answer").html("Question Image: " + msg.selected_image)
+        }
     });
 
     $("#pass").click(function () {
@@ -37,6 +46,14 @@ $(document).ready(function () {
     });
     $("#wrong").click(function () {
         socket.emit('wrong');
+    });
+    $("#standard").click(function () {
+        console.log("Switching to standard question type.")
+        socket.emit('standard');
+    });
+    $("#picture").click(function () {
+        console.log("Switching to picture question type.")
+        socket.emit('picture');
     });
 
     var dialogButton = document.querySelector('#reset-button');

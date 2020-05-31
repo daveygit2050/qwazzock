@@ -6,7 +6,9 @@ from qwazzock.server import get_socketio_and_app
 
 
 def run():
-    socketio, app = get_socketio_and_app(game=Game())
+    game = Game(content_path=os.getenv("QWAZZOCK_CONTENT_PATH"))
+    logger.info(f"Content path set to {game.content_path}.")
+    socketio, app = get_socketio_and_app(game=game)
     debug_mode = True if os.getenv("QWAZZOCK_SOCKETIO_DEBUG_MODE") else False
     socketio.run(app, debug=debug_mode, host="0.0.0.0")
 

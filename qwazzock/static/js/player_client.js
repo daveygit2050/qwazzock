@@ -14,6 +14,11 @@ $(document).ready(function () {
             $("#feedback").html("Fingers on buzzers!")
             $("#buzzer").prop("disabled", false);
         }
+        if (msg.question_type == "picture") {
+            $("#buzzer-image").prop("src", "static/questions/" + msg.selected_image);
+        } else {
+            $("#buzzer-image").prop("src", "static/images/buzzer.svg");
+        }
     });
     $("#buzzer").on('click touchstart hover', function () {
         if ($("#player_name").val().trim() == "") {

@@ -48,6 +48,16 @@ def test_get_host_ok(socketio_test_client, game, mocker):
     )
 
 
+def test_get_question_image_ok(socketio_test_client, game, mocker):
+    mock_send_file = mocker.patch("qwazzock.server.send_file")
+    game.content_path = "/foo/content/path"
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.app.test_client().get(
+        "/static/questions/bar-image.jpg"
+    )
+    mock_send_file.assert_called_once_with("/foo/content/path/questions/bar-image.jpg")
+
+
 def test_host_client_socket_connect_ok(socketio_test_client, mocker):
     mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
     game = Game()
@@ -63,6 +73,32 @@ def test_host_client_socket_pass_event_ok(socketio_test_client, mocker):
     socketio_test_client_under_test.connect(namespace="/host_client_socket")
     socketio_test_client_under_test.emit(namespace="/host_client_socket", event="pass")
     assert len(mock_socketio_emit.mock_calls) == 4
+
+
+def test_host_client_socket_picture_event_ok(socketio_test_client, mocker):
+    mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
+    game = Game()
+    game.question_type = "foo"
+    game.selected_image_index = 0
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/host_client_socket")
+    socketio_test_client_under_test.emit(
+        namespace="/host_client_socket", event="picture"
+    )
+    assert game.question_type == "picture"
+
+
+def test_host_client_socket_picture_event_no_images(socketio_test_client, mocker):
+    mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
+    game = Game()
+    game.question_type = "foo"
+    game.selected_image_index = None
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/host_client_socket")
+    socketio_test_client_under_test.emit(
+        namespace="/host_client_socket", event="picture"
+    )
+    assert game.question_type == "foo"
 
 
 def test_host_client_socket_reset_event_ok(socketio_test_client, mocker):
@@ -85,6 +121,19 @@ def test_host_client_socket_right_event_ok(socketio_test_client, mocker):
         "right", {"score_value": 1}, namespace="/host_client_socket"
     )
     assert len(mock_socketio_emit.mock_calls) == 4
+
+
+def test_host_client_socket_standard_event_ok(socketio_test_client, mocker):
+    mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
+    game = Game()
+    game.question_type = "foo"
+    game.selected_image_index = 0
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/host_client_socket")
+    socketio_test_client_under_test.emit(
+        namespace="/host_client_socket", event="standard"
+    )
+    assert game.question_type == "standard"
 
 
 def test_host_client_socket_wrong_event_ok(socketio_test_client, mocker):

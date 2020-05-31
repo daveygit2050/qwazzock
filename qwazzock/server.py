@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import send_file
 from flask_socketio import emit
 from flask_socketio import SocketIO
 
@@ -21,6 +22,11 @@ def get_socketio_and_app(game):
     def host():
         return render_template("host_client.html", page_name="host_client")
 
+    @app.route("/static/questions/<string:requested_image>")
+    def send_question_image(requested_image):
+        logger.info(f"Sending question image {requested_image} from content directory.")
+        return send_file(f"{game.content_path}/questions/{requested_image}")
+
     # Sockets
 
     @socketio.on("connect", namespace="/host_client_socket")
@@ -31,6 +37,18 @@ def get_socketio_and_app(game):
     def host_client_socket_pass_event():
         game.clear_hotseat()
         game.locked_out_teams = []
+        game.next_question()
+        update_clients()
+
+    @socketio.on("picture", namespace="/host_client_socket")
+    def host_client_socket_picture_event():
+        if game.selected_image_index is None:
+            logger.error(
+                "No question images available. Cannot enable picture question type."
+            )
+        else:
+            logger.info("Setting question type to picture.")
+            game.question_type = "picture"
         update_clients()
 
     @socketio.on("reset", namespace="/host_client_socket")
@@ -42,9 +60,16 @@ def get_socketio_and_app(game):
     def host_client_socket_right_event(json):
         score_value = int(json["score_value"])
         logger.info(f"Received right with score_value of {score_value}.")
+        game.next_question()
         if score_value > 0 and score_value < 10:
             game.right_answer(score_value)
             update_clients()
+
+    @socketio.on("standard", namespace="/host_client_socket")
+    def host_client_socket_standard_event():
+        logger.info("Setting question type to standard.")
+        game.question_type = "standard"
+        update_clients()
 
     @socketio.on("wrong", namespace="/host_client_socket")
     def host_client_socket_wrong_event():
