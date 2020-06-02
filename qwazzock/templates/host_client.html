@@ -11,9 +11,14 @@
         <div id="answer"></div>
     </h2>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" pattern="[0-9]+" id="score_value" value="1">
+        <input class="mdl-textfield__input" type="text" pattern="[1-9]" id="score_value" value="1">
         <label class="mdl-textfield__label" for="score_value">Score Value</label>
-        <span class="mdl-textfield__error">Input is not a number!</span>
+        <span class="mdl-textfield__error">Score value must be a whole number between 1 and 9.</span>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" pattern="[0-9]" id="wrong_answer_penalty" value="0">
+        <label class="mdl-textfield__label" for="wrong_answer_penalty">Wrong Answer Penalty</label>
+        <span class="mdl-textfield__error">Wrong answer penalty must be a whole number between 0 and 9.</span>
     </div>
     <div>
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pass"
