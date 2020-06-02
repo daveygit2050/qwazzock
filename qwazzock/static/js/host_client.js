@@ -45,7 +45,8 @@ $(document).ready(function () {
         socket.emit('right', { score_value: score_value });
     });
     $("#wrong").click(function () {
-        socket.emit('wrong');
+        var wrong_answer_penalty = $("#wrong_answer_penalty").val();
+        socket.emit('wrong', { wrong_answer_penalty: wrong_answer_penalty });
     });
     $("#standard").click(function () {
         console.log("Switching to standard question type.")

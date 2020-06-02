@@ -66,12 +66,19 @@ class Game:
         self.scores[self.team_in_hotseat] = (
             self.scores.get(self.team_in_hotseat, 0) + score_value
         )
-        self.scores = dict(
-            sorted(self.scores.items(), key=operator.itemgetter(1), reverse=True)
-        )
+        self.sort_scores()
         self.locked_out_teams = []
         self.clear_hotseat()
 
-    def wrong_answer(self):
+    def sort_scores(self):
+        self.scores = dict(
+            sorted(self.scores.items(), key=operator.itemgetter(1), reverse=True)
+        )
+
+    def wrong_answer(self, wrong_answer_penalty=0):
+        self.scores[self.team_in_hotseat] = (
+            self.scores.get(self.team_in_hotseat, 0) - wrong_answer_penalty
+        )
         self.locked_out_teams.append(self.team_in_hotseat)
+        self.sort_scores()
         self.clear_hotseat()

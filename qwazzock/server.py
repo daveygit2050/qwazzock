@@ -72,9 +72,14 @@ def get_socketio_and_app(game):
         update_clients()
 
     @socketio.on("wrong", namespace="/host_client_socket")
-    def host_client_socket_wrong_event():
-        game.wrong_answer()
-        update_clients()
+    def host_client_socket_wrong_event(json):
+        wrong_answer_penalty = int(json["wrong_answer_penalty"])
+        logger.info(
+            f"Received wrong with wrong_answer_penalty of {wrong_answer_penalty}."
+        )
+        if wrong_answer_penalty >= 0 and wrong_answer_penalty < 10:
+            game.wrong_answer(wrong_answer_penalty=wrong_answer_penalty)
+            update_clients()
 
     @socketio.on("connect", namespace="/player_client_socket")
     def player_client_socket_connect():

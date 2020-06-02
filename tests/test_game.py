@@ -96,7 +96,7 @@ class TestGame:
         game.team_in_hotseat = "Oxford"
         game.scores = {"Oxford": 1, "Cambridge": 3}
         game.locked_out_teams = ["Bristol"]
-        game.wrong_answer()
-        assert game.scores == {"Oxford": 1, "Cambridge": 3}
+        game.wrong_answer(wrong_answer_penalty=2)
+        assert game.scores == {"Oxford": -1, "Cambridge": 3}
         assert game.locked_out_teams == ["Bristol", "Oxford"]
         assert len(mock_clear_hotseat.mock_calls) == 2
