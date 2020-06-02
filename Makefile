@@ -44,6 +44,7 @@ release: build
 	git update-index --refresh 
 	git diff-index --quiet HEAD --
 	git tag --sign --message "qwazzock version ${version}" ${version} && git push --tags
+	poetry publish
 
 .PHONY: run
 run:
