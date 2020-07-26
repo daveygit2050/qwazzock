@@ -136,6 +136,18 @@ def test_host_client_socket_standard_event_ok(socketio_test_client, mocker):
     assert game.question_type == "standard"
 
 
+def test_host_client_socket_team_event_ok(socketio_test_client, mocker):
+    mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
+    game = Game()
+    game.locked_out_teams = []
+    socketio_test_client_under_test = socketio_test_client(game)
+    socketio_test_client_under_test.connect(namespace="/host_client_socket")
+    socketio_test_client_under_test.emit(
+        "team", {"team_name": "Oxford"}, namespace="/host_client_socket"
+    )
+    assert game.locked_out_teams == ["Oxford"]
+
+
 def test_host_client_socket_wrong_event_ok(socketio_test_client, mocker):
     mock_socketio_emit = mocker.patch("qwazzock.server.SocketIO.emit")
     game = Game()
