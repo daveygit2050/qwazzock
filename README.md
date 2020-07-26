@@ -98,7 +98,12 @@ This includes:
 
 ### Release version
 
-Local repo must be clean.
+Tag the repository with the project version and publish the distributables to [PyPI](https://pypi.org/project/qwazzock/).
 
-`make release`
+*Local repo must be clean.*
+
+```
+poetry config pypi-token.pypi ${your-pypi-token}
+make release
+```
 
