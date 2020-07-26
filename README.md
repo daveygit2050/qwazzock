@@ -25,6 +25,8 @@ As a host, you can then navigate to the `/host` path (e.g. http://127.0.0.1:5000
 
 You can also use `reset` to wipe all data for the in progress game and start a new one.
 
+Clicking on the team's button will lock out that team until the end of the round. This can be useful for managing elimitator rounds and the like.
+
 ### Question Types
 
 There are two "question types" you can select, `standard` or `picture`.

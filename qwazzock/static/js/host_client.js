@@ -12,8 +12,17 @@ $(document).ready(function () {
     socket.on('host_client_data', function (msg) {
         $('#player').html("Player in hotseat: " + msg.player_in_hotseat);
         $('#team').html("Team in hotseat: " + msg.team_in_hotseat);
-        $('#locked_out').html("Locked out: " + msg.locked_out_teams);
-        $('#scores').html("Scores: " + JSON.stringify(msg.scores));
+        $('#teams').html("Teams: ");
+        $.each(msg.scores, function (team_name, team_score) {
+            var state = "enabled";
+            if (jQuery.inArray(team_name, msg.locked_out_teams) !== -1){
+                state = "disabled";
+            };
+            $('#teams').append(`<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="team-${team_name}" style="height:5vh;margin-right:1vw;" ${state}>${team_name} (${team_score})</button>`);
+            $(`#team-${team_name}`).click(function () {
+                socket.emit('team', { team_name: team_name });
+            });
+        });
         if (msg.player_in_hotseat == "Pending") {
             $("#right").prop("disabled", true);
             $("#wrong").prop("disabled", true);

@@ -71,6 +71,13 @@ def get_socketio_and_app(game):
         game.question_type = "standard"
         update_clients()
 
+    @socketio.on("team", namespace="/host_client_socket")
+    def host_client_socket_team_event(json):
+        team_name = json["team_name"]
+        logger.info(f"Received team event with team_name {team_name}.")
+        game.locked_out_teams.append(team_name)
+        update_clients()
+
     @socketio.on("wrong", namespace="/host_client_socket")
     def host_client_socket_wrong_event(json):
         wrong_answer_penalty = int(json["wrong_answer_penalty"])

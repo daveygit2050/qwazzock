@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "qwazzock"
-version = "0.11.2"
+version = "0.12.0"
 description = "An app for hosting interactive quizzes."
 authors = ["Dave Randall <19395688+daveygit2050@users.noreply.github.com>", "Iain Rawson <30925288+iainrawson@users.noreply.github.com>"]
 readme = "README.md"
